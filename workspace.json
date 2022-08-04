@@ -3,6 +3,9 @@
   "version": 2,
   "projects": {
     "demo": "apps/demo",
-    "demo-e2e": "apps/demo-e2e"
+    "demo-e2e": "apps/demo-e2e",
+    "testlib": "libs/testlib",
+    "testlib2": "libs/testlib2",
+    "testlib3": "libs/testlib3"
   }
 }

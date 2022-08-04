@@ -1,0 +1,35 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/testlib2/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "libs/testlib2/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/testlib2"
+      ],
+      "options": {
+        "jestConfig": "libs/testlib2/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "libtest": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npx ts-node -T -r tsconfig-paths/register --project libs/testlib2/tsconfig.scripts.json libs/testlib2/src/seed.ts"
+      }
+    }
+  }
+}

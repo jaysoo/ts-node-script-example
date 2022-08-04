@@ -5,7 +5,9 @@
   "targets": {
     "build": {
       "executor": "@nrwl/next:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "root": "apps/demo",
@@ -16,23 +18,29 @@
           "outputPath": "apps/demo"
         },
         "production": {}
-      }
+      },
+      "dependsOn": [
+        "build-custom-server"
+      ]
     },
     "serve": {
       "executor": "@nrwl/next:server",
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "demo:build",
-        "dev": true
+        "dev": true,
+        "customServerTarget": "demo:serve-custom-server"
       },
       "configurations": {
         "development": {
           "buildTarget": "demo:build:development",
-          "dev": true
+          "dev": true,
+          "customServerTarget": "demo:serve-custom-server:development"
         },
         "production": {
           "buildTarget": "demo:build:production",
-          "dev": false
+          "dev": false,
+          "customServerTarget": "demo:serve-custom-server:production"
         }
       }
     },
@@ -44,7 +52,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/demo"],
+      "outputs": [
+        "coverage/apps/demo"
+      ],
       "options": {
         "jestConfig": "apps/demo/jest.config.ts",
         "passWithNoTests": true
@@ -52,9 +62,43 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/demo/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": [
+          "apps/demo/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "build-custom-server": {
+      "executor": "@nrwl/js:tsc",
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/demo",
+        "main": "apps/demo/server/main.ts",
+        "tsConfig": "apps/demo/tsconfig.server.json",
+        "clean": false,
+        "assets": []
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve-custom-server": {
+      "executor": "@nrwl/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "demo:build-custom-server"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "demo:build-custom-server:development"
+        },
+        "production": {
+          "buildTarget": "demo:build-custom-server:production"
+        }
       }
     }
   },
